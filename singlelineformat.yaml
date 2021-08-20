@@ -1,0 +1,6 @@
+- hosts: all
+  tasks:
+    - copy: src=/etc/group dest=/tmp owner=root group=root mode=777
+    - file: path=/tmp/aws state=directory
+    - yum: name=tree state=latest
+    - service: name=httpd state=stopped

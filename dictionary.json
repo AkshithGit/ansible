@@ -1,0 +1,33 @@
+[
+  {
+    "hosts": "all",
+    "tasks": [
+      {
+        "copy": {
+          "src": "/etc/gshadow",
+          "dest": "/tmp",
+          "owner": "root",
+          "mode": 753
+        }
+      },
+      {
+        "file": {
+          "path": "/tmp/gcp",
+          "state": "directory"
+        }
+      },
+      {
+        "yum": {
+          "name": "nginx",
+          "state": "latest"
+        }
+      },
+      {
+        "service": {
+          "name": "nginx",
+          "state": "started"
+        }
+      }
+    ]
+  }
+]
