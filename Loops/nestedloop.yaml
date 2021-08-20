@@ -1,0 +1,56 @@
+- hosts: all
+  vars:
+   myfile:
+    - /etc/passwd
+   mydir:
+    - /tmp
+   tasks:
+    - copy:
+       src: "{{ item  }}"
+       dest: "{{ item }}"
+      with_items:
+       - "{{ myfile }}"
+       - "{{ mydir  }}"
+
+# the above playbook gives error
+
+- hosts: all 
+  tasks:
+   - copy:
+       src: "{{ item[0] }}"
+       dest: "{{ item[1] }}"
+     with_nested:
+       - /etc/passwd
+       - /tmp
+# the above playbook works
+
+- hosts: all
+  tasks:
+   - copy:
+       src: "{{ item[0] }}"
+       dest: "{{ item[1] }}"
+     with_nested:
+       - ['/etc/passwd','/etc/group','/etc/shadow']
+       - ['/tmp','/mnt']
+
+# to copy number of files to number of directories
+
+
+- hosts: all
+  vars:
+   myfile:
+    - /etc/passwd
+    - /etc/group
+    - /etc/shadow
+  mydir:
+    - /tmp
+    - /mnt
+  tasks:
+   - copy:
+       src: "{{ item[0] }}"
+       dest: "{{ item[1] }}"
+     with_nested:
+      - "{{ myfile  }}"
+      - "{{ mydir  }}"
+
+# we used variable and nested
