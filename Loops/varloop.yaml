@@ -1,0 +1,28 @@
+- hosts: all
+  vars:
+   mydir:
+      - /tmp/akki1
+      - /tmp/akki2
+      - /tmp/akki3
+  myfile:
+      - /etc/passwd
+      - /etc/group
+      - /etc/shadow
+      - /etc/gshadow
+
+  tasks:
+   - copy:
+      src: "{{ item }}"
+      dest: /tmp/practiceloop
+    with_items:
+       - "{{ myfile  }}"
+   - file:
+      path: "{{ item }}"
+      state: directory
+     with_items:
+       - "{{ mydir }}"
+   - copy:
+       src: /etc/passwd
+       dest: "{{ item  }}"
+     with_items: "{{ mydir }}"
+# we can also write as above without using -
