@@ -1,0 +1,17 @@
+# ansible-playbook variables3.yaml -e mydir=/tmp/practice3 -e myfile=/etc/shadow -e mypkg=httpd,nfs-utils,samba,tree
+# priority: command line variables(-e) > variables file referenced > in file variables
+- name: Defining variables demo
+  hosts: all
+  tasks:
+    - file:
+       path: "{{ mydir }}"
+       state: directory
+    - copy:
+       src: "{{ myfile }}"
+       dest: "{{ mydir  }}"
+       owner:  root
+       mode: 777
+    - yum:
+       name: "{{ mypkg  }}"
+       state: absent
+
