@@ -1,4 +1,5 @@
-- hosts: web
+- name: This is for web servers
+  hosts: web
   tasks:
     - copy:
         src: /etc/passwd
@@ -8,7 +9,8 @@
     - file:
         path: /tmp/ansible
         state: directory
-- hosts: app
+- name: This is for app servers
+  hosts: app
   tasks:
     - yum:
         name: httpd
