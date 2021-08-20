@@ -1,21 +1,25 @@
 - name: This is for web servers
   hosts: web
   tasks:
-    - copy:
+    - name:Running copy task
+      copy:
         src: /etc/passwd
         dest: /tmp
         owner: root
         mode: 753
-    - file:
+    - name:Running file creation task
+      file:
         path: /tmp/ansible
         state: directory
 - name: This is for app servers
   hosts: app
   tasks:
-    - yum:
+   - name:Running yum module task
+     yum:
         name: httpd
         state: latest
-    - service:
+   - name:Running service task
+     service:
         name: httpd
         state: started
 
