@@ -1,0 +1,9 @@
+- name:Running yum module task
+  yum:
+        name: httpd
+        state: latest
+- name:Running service task
+  service:
+        name: httpd
+        state: started
+

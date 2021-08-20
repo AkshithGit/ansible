@@ -1,0 +1,11 @@
+- name:Running copy task
+  copy:
+      src: /etc/passwd
+      dest: /tmp
+      owner: root
+      mode: 753
+- name:Running file creation task
+  file:
+      path: /tmp/ansible
+      state: directory
+

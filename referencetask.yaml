@@ -1,0 +1,9 @@
+- name: This is for web servers
+  hosts: web
+  tasks:
+    - import_tasks: task.yaml
+
+- name: This is for app servers
+  hosts: app
+  tasks:
+    - import_tasks: task2.yaml
