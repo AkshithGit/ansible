@@ -1,0 +1,16 @@
+- hosts: all
+  vars files:
+    -  ./myvariables
+  tasks:
+    - file:
+       path: "{{ mydir }}"
+       state: directory
+    - copy:
+       src: "{{ myfile }}"
+       dest: "{{ mydir  }}"
+       owner:  root
+       mode: 777
+    - yum:
+       name: "{{ mypkg  }}"
+       state: absent
+

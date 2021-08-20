@@ -1,0 +1,7 @@
+mkdir: /tmp/PRACTICE
+myfile: /etc/fstab
+mypkg: 
+  httpd 
+  nfs-utils
+  samba
+  tree
