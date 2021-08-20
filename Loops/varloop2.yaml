@@ -1,0 +1,33 @@
+
+- hosts: all
+  vars:
+   myfile:
+    - /etc/passwd
+    - /etc/group
+    - /etc/shadow
+  tasks:
+   - copy:
+       src: "{{ myfile }}"
+       dest: "{{ item }}"
+     with_items:
+       - /tmp
+       - /opt
+       - /mnt
+
+# this does not work as myfile variable will not be called 
+
+- hosts: all
+  vars:
+   myfile:
+    - /etc/passwd
+    - /etc/group
+    - /etc/shadow
+  tasks:
+   - copy:
+       src: "{{ myfile[0] }}"
+       dest: "{{ item[1] }}"
+     with_nested:
+       - /tmp
+       - /opt
+       - /mnt
+#this works as first index 0 takes value from myfile variable
