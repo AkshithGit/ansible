@@ -1,0 +1,22 @@
+- name: Defining variables demo
+  hosts: all
+  vars:
+    mydir: /tmp/practice
+    myfile: /etc/passwd
+    mypkg:
+      - httpd
+      - nfs-utils
+      - tree
+      - samba
+  tasks:
+    - file:
+       path: "{{ mydir }}"
+       state: directory
+    - copy:
+       src: "{{ myfile }}"
+       dest: "{{ mydir  }}"
+       owner:  root
+       mode: 777
+    - yum:
+       name: "{{ mypkg  }}"
+       state: latest
