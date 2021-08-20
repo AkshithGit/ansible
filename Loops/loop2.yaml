@@ -1,0 +1,25 @@
+- hosts: all
+  tasks:
+   - copy:
+      src: "{{ item }}"
+      dest: /tmp/practiceloop
+     with_items:
+      - /etc/passwd
+      - /etc/group
+      - /etc/shadow
+      - /etc/gshadow
+   - file:
+      path: "{{ item }}"
+      state: directory
+     with_items:
+       - /tmp/akki1
+       - /tmp/akki2
+       - /tmp/akki3
+   - copy:
+       src: /etc/passwd
+       dest: "{{ item  }}"
+     with_items:
+       - /tmp/akki1
+       - /tmp/akki2
+       - /tmp/akki3
+# Loop in destination

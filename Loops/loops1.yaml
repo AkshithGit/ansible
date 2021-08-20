@@ -1,0 +1,16 @@
+- hosts: all
+  tasks:
+   - copy:
+       src: /etc/passwd
+       dest: /tmp
+   - copy:
+       src: /etc/group
+       dest: /tmp
+   - copy:
+       src: /etc/shadow
+       dest: /tmp
+   - copy:
+       src: /etc/gshadow
+       dest: /tmp
+#we called 4 times copy module
+  
