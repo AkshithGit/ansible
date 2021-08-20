@@ -1,0 +1,23 @@
+- hosts: all
+  tasks:
+    - yum:
+       name: "{{ item  ]}"
+       state: installed
+      with_items:
+       - ftp 
+       - httpd 
+       - vsftpd
+       - nfs-utils
+#################
+#yum modules no need loop
+
+- hosts: all
+  tasks:
+    - yum:
+       name:
+       - ftp
+       - httpd
+       - vsftpd
+       - nfs-utils
+       state: installed
+
