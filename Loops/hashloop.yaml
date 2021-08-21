@@ -1,0 +1,93 @@
+- hosts: all
+  tasks:
+   - copy: 
+      src: "{{ item  }}"
+      dest: /tmp
+     with_items:
+      - /etc/passwd
+      - /etc/group
+      - /etc/shadow
+
+####################################
+
+- hosts: all
+  tasks:
+   - copy:
+      src: "{{ item  }}"
+      dest: 
+         - /tmp
+         - /opt
+         - /mnt
+     with_items:
+      - /etc/passwd
+      - /etc/group
+      - /etc/shadow
+
+#this doesnt work
+############################################
+
+- hosts: all
+  vars: 
+    myfile:
+      - /etc/passwd
+      - /etc/group
+      - /etc/shadow
+    mydir:
+      - /tmp
+      - /opt
+      - /mnt
+  tasks:
+      - copy:
+          src: "{{ item[0] }}"
+          dest: "{{ item[1] }}"
+        with_nested:
+          - "{{ myfile }}"
+          - "{{ mydir  }}"
+#Even now  we cant acheive the goal of copying specific file to specific directory
+
+#########################################
+- hosts: all
+  tasks: 
+   - copy:
+      src: "{{ item }}"
+      dest: /tmp
+     with_items:
+      - /etc/passwd
+   - copy:
+      src: "{{ item }}"
+      dest: /opt
+     with_items:
+       - /etc/group
+   - copy:
+      src: "{{ item }}"
+      dest: /mnt
+     with_items:
+       - /etc/shadow
+# our goal is acheived but we used simple loop but it is repeated copy module this can be acheived by not even using loop.
+##################################
+- hosts: all
+  tasks:
+   - copy:
+      src: /etc/passwd
+      dest: /tmp
+   - copy: 
+      src: /etc/group
+      dest: /opt
+   - copy:
+      src: /etc/shadow
+      dest: /mnt
+#without loop
+#######################################
+
+#By using hash loop we use copy module at once
+- hosts: all
+  tasks:
+   - copy:
+       src: "{{ item.a }}"
+       dest: "{{ item.b }}"
+     with_items:
+       - { a: '/etc/passwd', b: '/tmp' }
+       - { a: '/etc/group', b: '/opt' }
+       - { a: '/etc/shadow', b: '/mnt' }
+
+
