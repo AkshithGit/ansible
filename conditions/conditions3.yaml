@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+   - stat:
+      path: /etc/cloudknowledges
+     register: cloudknowledgesindia
+
+   - debug: var=cloudknowledgesindia
+
+# checks if the cloudknowledges is there or not. we use a variable cloudknowledgesindia by using register and storing output init.
+# debug prints the variable
+   - copy: 
+       content: "Welcome to Ansible condition Topic"
+       dest: /etc/cloudknowledges
+     when: cloudknowledgesindia.state.exists == true
+   - file: 
+       path: /etc/cloudknowledges
+       state: touch
+     when: cloudknowledsgesindia.stat.exists == false

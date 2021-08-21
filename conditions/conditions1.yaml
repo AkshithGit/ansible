@@ -1,0 +1,11 @@
+- hosts: all
+  tasks:
+    - yum: 
+        name: httpd
+        state: uninstalled
+      when: ansible_distribution == "Amazon"
+      when: ansible_distribution_major_version == "1"
+    - service:
+        name: httpd 
+        state: stopped
+      

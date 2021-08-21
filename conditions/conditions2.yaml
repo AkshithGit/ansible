@@ -1,0 +1,30 @@
+- hosts: all
+  tasks:
+    - yum:
+        name: httpd
+        state: installed
+      when: ansible_distribution == "Amazon" and  when: ansible_distribution_major_version == "1"
+    - service:
+        name: httpd
+        state: stopped
+#this is how we use two conditions need to be considered 
+- hosts: all
+  tasks:
+    - yum:
+        name: httpd
+        state: installed
+      when: ansible_distribution == "Amazon" or  when: ansible_distribution_major_version == "1"
+    - service:
+        name: httpd
+        state: stopped
+#############################################
+- hosts: all
+  tasks:
+    - yum:
+        name: httpd
+        state: installed
+      when: (ansible_distribution == "Amazon" and  when: ansible_distribution_major_version == "1") or (ansible_distribution == "Ubuntu" and  when: ansible_distribution_major_version == "2") 
+    - service:
+        name: httpd
+        state: stopped
+
