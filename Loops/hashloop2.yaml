@@ -1,0 +1,13 @@
+# 3 users and 3 groups .add each user to different groups
+- hosts: all
+  tasks:
+   - user:
+       name: "{{ item.user }}"
+       state: present
+       groups: "{{ item.group }}"
+     with_items:
+       - { user: 'harry', group: 'dev-group' }
+       - { user: 'natasha', group: 'test-group' }
+       - { user: 'sarah', group: 'prod-group' }
+
+# groups are already existing but user are created and added
