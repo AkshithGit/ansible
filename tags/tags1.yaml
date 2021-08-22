@@ -1,0 +1,10 @@
+- hosts: all
+  tasks:   
+    - copy:
+        src: /etc/passwd
+        dest: /tmp
+      tags: dev-team
+    - file:
+        path: /tmp/cloudindia
+        state: directory
+      tags: test-team
