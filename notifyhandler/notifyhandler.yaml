@@ -1,0 +1,14 @@
+- hosts: all
+  tasks: 
+     - lineinfile:
+        path: /etc/ssh/sshd_config
+        line: DenyUsers harry
+       notify: cloudknowledges
+     - copy:
+        src: /etc/passwd
+        dest: /tmp
+  handlers: 
+     - name: cloudknowledges
+       service:
+         name: sshd
+         state: restarted

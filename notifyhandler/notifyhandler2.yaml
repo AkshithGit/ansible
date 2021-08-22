@@ -1,0 +1,21 @@
+- hosts: all
+  tasks:
+     - lineinfile:
+        path: /etc/ssh/sshd_config
+        line: DenyUsers natasha
+       notify:
+         - cloudknowledges
+         - cloudindia 
+     - copy:
+        src: /etc/passwd
+        dest: /tmp
+  handlers:
+     - name: cloudknowledges
+       service:
+         name: sshd
+         state: restarted
+         
+     - name: cloudindia
+       yum:
+         name: httpd
+         state: installed
