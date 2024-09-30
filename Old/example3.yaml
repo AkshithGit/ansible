@@ -1,0 +1,14 @@
+#multiline format
+
+hosts: all 
+tasks: 
+ - copy: src=/etc/shdow
+         dest=/tmp
+         owner=k8s
+         group=kuberrnetes
+         mode=777
+ - file: path=/tmp/azure
+         state=directory 
+ - yum: name=apache2
+        state=present 
+        

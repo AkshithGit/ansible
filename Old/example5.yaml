@@ -1,0 +1,26 @@
+#run different tasks in different hosts in a single file 
+
+- name: This is my web server group
+  hosts: web 
+  tasks:
+  - name: This is a copy file task
+    copy: 
+      src: /etc/passwd
+      dest: /tmp
+      owner: k8s
+      group: kubernetes
+      mode: 777
+  - name: This task creates a directory 
+    file: 
+      path: /tmp/ansible
+      state: directory 
+#Here name is not mandatory it is just to give comments when ansible is running the playbook.
+- name: This is my db group
+  hosts: db
+  tasks: 
+  - yum: 
+      name: httpd
+      state: latest 
+  - service: 
+      name: httpd
+      state: start 

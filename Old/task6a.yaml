@@ -1,0 +1,11 @@
+- name: This is a copy file task
+  copy: 
+    src: /etc/passwd
+    dest: /tmp
+    owner: k8s
+    group: kubernetes
+    mode: 777
+- name: This task creates a directory 
+  file: 
+    path: /tmp/ansible
+    state: directory 

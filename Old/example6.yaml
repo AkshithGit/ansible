@@ -1,0 +1,9 @@
+#referencing a playbook from another playbook
+- name: This is my web server group
+  hosts: web
+  tasks:
+    - import_task: task6a.yaml
+- name: This is for db servers
+  hosts: db
+  tasks:
+    - import_tasks: task6b.yaml

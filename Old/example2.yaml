@@ -1,0 +1,9 @@
+#single line format
+
+hosts: all 
+tasks: 
+  - copy: src=/etc/passwd dest=/tmp owner=k8s group=kubernetes mode=777
+  - file: path=/tmp/aws state=touch 
+  - yum: name=tree state=latest 
+  - service: name=httpd state=restart 
+  

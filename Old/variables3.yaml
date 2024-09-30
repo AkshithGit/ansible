@@ -1,0 +1,42 @@
+#call variables in the command line 
+#ansible-playbook variables3.yaml -e mydir=/tmp/sudharshanam -e   myfile=/etc/passwd -e mypkg=httpd,nfs-utils,tree,samba 
+#Command line variable value will get more priority than variables defined in the file.
+#referenced varaible to a variablefile get more priority than in file declared variable.
+# Command line gets more priority than variablesfile refernce.
+
+hosts: all 
+tasks:  
+  - name: "This task will create a directory name of {{ mydir }}"
+    file: 
+      path: "{{ mydir }}"
+      state: directory 
+  - copy:
+      src: "{{ myfile }}"
+      dest: "{{ mydir }}"
+  - yum:
+      name: "{{ mypkg }}"
+      state: latest 
+---
+#overwrite a variable value when running command
+hosts: all 
+vars:
+  mydir: /tmp/Akshith
+  myfile: /etc/shadow
+  mypkg: 
+    - apache2 
+    - net-tools
+    - cowsay
+    - smtp 
+vars_files:
+   - ./myvariables.yml
+tasks:  
+  - name: "This task will create a directory name of {{ mydir }}"
+    file: 
+      path: "{{ mydir }}"
+      state: directory 
+  - copy:
+      src: "{{ myfile }}"
+      dest: "{{ mydir }}"
+  - yum:
+      name: "{{ mypkg }}"
+      state: latest 

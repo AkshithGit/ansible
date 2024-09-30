@@ -1,0 +1,22 @@
+#Use of ansible variables: We define a value to a variable to implement the DRY.
+
+hosts: all 
+vars: 
+  mydir: /tmp/sudharshanam
+  myfile: /etc/passwd
+  mypkg: 
+    - httpd
+    - nfs-utils
+    - tree 
+    - samba 
+tasks:  
+  - name: "This task will create a directory name of {{ mydir }}"
+    file: 
+      path: "{{ mydir }}"
+      state: directory 
+  - copy:
+      src: "{{ myfile }}"
+      dest: "{{ mydir }}"
+  - yum:
+      name: "{{ mypkg }}"
+      state: latest 

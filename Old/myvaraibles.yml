@@ -1,0 +1,7 @@
+  mydir: /tmp/sudharshanam
+  myfile: /etc/passwd
+  mypkg: 
+    - httpd
+    - nfs-utils
+    - tree 
+    - samba 

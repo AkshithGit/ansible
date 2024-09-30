@@ -1,0 +1,32 @@
+{
+    "hosts": "all",
+    "tasks": [
+      {
+        "copy": {
+          "src": "/etc/passwd",
+          "dest": "/tmp",
+          "owner": "k8s",
+          "group": "kubernetes",
+          "mode": 777
+        }
+      },
+      {
+        "file": {
+          "path": "/tmp/ansible",
+          "state": "directory"
+        }
+      },
+      {
+        "yum": {
+          "name": "httpd",
+          "state": "latest"
+        }
+      },
+      {
+        "service": {
+          "name": "httpd",
+          "state": "start"
+        }
+      }
+    ]
+  }

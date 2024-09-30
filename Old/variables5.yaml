@@ -1,0 +1,29 @@
+#for groups 
+#[web:vars]
+#mydir=/tmp/sudharshanam
+#myfile=/etc/passwd 
+#mypkg=httpd,nfs-utils,tree,samba
+
+#[web]
+#192.168.1.4
+
+#[app]
+#192.168.1.5
+
+#[app:vars]
+#mydir=/tmp/kumar 
+#myfile=/etc/shadow 
+#mypkg=tree,docker,net-tools,smtp
+
+hosts: all 
+tasks:  
+  - name: "This task will create a directory name of {{ mydir }}"
+    file: 
+      path: "{{ mydir }}"
+      state: directory 
+  - copy:
+      src: "{{ myfile }}"
+      dest: "{{ mydir }}"
+  - yum:
+      name: "{{ mypkg }}"
+      state: latest 

@@ -1,0 +1,17 @@
+#Calling variables from different file
+#Use of ansible variables: We define a value to a variable to implement the DRY.
+
+hosts: all 
+vars_files: 
+  - ./myvariables.yml
+tasks:  
+  - name: "This task will create a directory name of {{ mydir }}"
+    file: 
+      path: "{{ mydir }}"
+      state: directory 
+  - copy:
+      src: "{{ myfile }}"
+      dest: "{{ mydir }}"
+  - yum:
+      name: "{{ mypkg }}"
+      state: latest 
