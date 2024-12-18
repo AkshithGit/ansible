@@ -1,0 +1,52 @@
+parameters:
+- name: System
+  displayName: 'The target stack for deployment'
+  type: string
+- name: Environment
+  displayName: 'The target environment for deployment'
+  type: string
+- name: VariableGroup
+  displayName: 'The name of the variable group holding information for the infra provisioner sp'
+  type: string
+
+variables:
+- group: wholeview.database.dev.config  # Linking the variable group
+- name: BuildPlatform
+  value: 'Any CPU'
+- name: BuildConfiguration
+  value: 'Release'
+
+jobs:
+- job: build_dacpac
+  displayName: Build and Publish DACPAC
+  pool:
+    vmImage: 'windows-latest'  # Use Windows for SQL project builds
+  steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
+      inputs:
+        packageType: 'sdk'
+        version: '6.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet Tool'
+
+    - task: NuGetCommand@2
+      displayName: 'Restore NuGet Packages'
+      inputs:
+        restoreSolution: '**/*.sqlproj'
+
+    - task: VSBuild@1
+      displayName: 'Build SQL Database Project'
+      inputs:
+        solution: '**/*.sqlproj'  # Build all SQL projects
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish DACPAC Artifact'
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/bin/$(BuildConfiguration)'  # Path to DACPAC
+        ArtifactName: 'WholeviewDatabase'
+        publishLocation: 'Container'
