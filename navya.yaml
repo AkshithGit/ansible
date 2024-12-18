@@ -10,7 +10,7 @@ parameters:
   type: string
 
 variables:
-- group: wholeview.database.dev.config  # Linking the variable group
+- group: wholeview.database.dev.config  # Fetches values like 'Application' and 'RoleID'
 - name: BuildPlatform
   value: 'Any CPU'
 - name: BuildConfiguration
@@ -18,35 +18,34 @@ variables:
 
 jobs:
 - job: build_dacpac
-  displayName: Build and Publish DACPAC
+  displayName: Build, Certify, and Publish DACPAC
   pool:
-    vmImage: 'windows-latest'  # Use Windows for SQL project builds
+    vmImage: 'windows-latest'
+
   steps:
-    - task: UseDotNet@2
-      displayName: 'Install .NET SDK'
-      inputs:
-        packageType: 'sdk'
-        version: '6.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
-
-    - task: NuGetToolInstaller@1
-      displayName: 'Install NuGet Tool'
-
-    - task: NuGetCommand@2
-      displayName: 'Restore NuGet Packages'
-      inputs:
-        restoreSolution: '**/*.sqlproj'
+    - script: |
+        echo "Using Application: $(Application)"
+        echo "Using RoleID: $(RoleID)"
+      displayName: 'Fetch and Display Variable Values'
 
     - task: VSBuild@1
-      displayName: 'Build SQL Database Project'
+      displayName: 'SQL Database Project Build'
       inputs:
-        solution: '**/*.sqlproj'  # Build all SQL projects
+        solution: '**/*.sqlproj'
         platform: '$(BuildPlatform)'
         configuration: '$(BuildConfiguration)'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish DACPAC Artifact'
+    - task: GlapiHeadlessBuild@1
+      displayName: 'Greenlight Api: Certifies a Build'
+      enabled: true
       inputs:
-        PathtoPublish: '$(Build.SourcesDirectory)/bin/$(BuildConfiguration)'  # Path to DACPAC
-        ArtifactName: 'WholeviewDatabase'
-        publishLocation: 'Container'
+        GreenlightApiConnection: 'Greenlight Api - Prod'
+        FailOnGlapiRejection: false
+        # Example of using variable values in the inputs
+        AdditionalParameter: '$(Application)-$(RoleID)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: WholeviewDatabase'
+      inputs:
+        PathtoPublish: '$(Build.StagingDirectory)'
+        ArtifactName: WholeviewDatabase
